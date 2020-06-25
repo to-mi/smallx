@@ -25,7 +25,7 @@ def svgd(
             disable progress bar.
 
     Returns:
-        The particles x (the same object as input - x is modified in place).
+        The particles x (the same object as input; x is modified in place).
     """
     # TODO: update the optimizer interface to something more sensible?
     if optimizer is None:
@@ -41,11 +41,11 @@ def svgd(
 
         for i in range(n_iter):
             optimizer.zero_grad()
-            vals = logp(x)  # log prob for each particle
-            vals.backward(x.new_ones((n_particles,)))
+            particle_log_probs = logp(x)
+            particle_log_probs.backward(x.new_ones((n_particles,)))
 
             with torch.no_grad():
-                # d2 will be squared euclidean distance
+                # d2 will be squared Euclidean distance.
                 G = x @ x.t()
                 dG = torch.diag(G)
                 d2 = dG + dG.unsqueeze(0).t() - 2.0 * G
@@ -62,7 +62,9 @@ def svgd(
 
             iter1 = i + 1
             if verbosity > 0 and (iter1 % verbosity == 0 or iter1 == n_iter):
-                pbar.set_postfix_str(f"mean log prob={vals.mean().item():.2f}")
+                pbar.set_postfix_str(
+                    f"mean log prob={particle_log_probs.mean().item():.2f}"
+                )
                 pbar.update(iter1 - last_pb_update)
                 last_pb_update = iter1
 

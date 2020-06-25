@@ -119,7 +119,7 @@ class Inference(abc.ABC):
                 [sample[param_name] for sample in np_samples_list]
             )[
                 np.newaxis, ...
-            ]  # first dim should be "chain" for conversion to Inference Data
+            ]  # First dim should be "chain" for conversion to InferenceData.
 
         infdata = az.convert_to_inference_data(dictdata)
         infdata.posterior.attrs["inference_library"] = "smallx"

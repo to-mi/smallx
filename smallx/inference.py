@@ -116,7 +116,7 @@ class Inference(abc.ABC):
 
         for param_name in self.model.parameters.keys():
             dictdata[param_name] = np.stack(
-                list(sample[param_name] for sample in np_samples_list)
+                [sample[param_name] for sample in np_samples_list]
             )[
                 np.newaxis, ...
             ]  # first dim should be "chain" for conversion to Inference Data

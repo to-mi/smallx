@@ -100,6 +100,8 @@ print(y)
  * More examples. Plot results and compute some predictions.
  * Allow setting initial points for inference.
  * Add tests. Currently `pytest` just checks black formatting and mypy types.
+ * Consider allowing log prob functions to take a batch of parameter candidates and accumulate the corresponding log probabilities to a vector. This would allow computing the log probs for SVGD without looping over the particles and running multiple MCMC chains "in parallel". The user would have the responsibility to write the log prob function appropriately. The `model_block` decorator could take a parameter which would indicate whether the block handles batched parameters or not (and automatic looping over the batch would be done in the latter case).
+ * Interface to [LittleMCMC](https://github.com/eigenfoo/littlemcmc) for NUTS/HMC sampling?
 
 ## Contact
 
